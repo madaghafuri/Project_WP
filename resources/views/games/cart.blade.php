@@ -40,12 +40,14 @@
       @endforeach
     
     <div id="total-price" class="mt-3">
-      <p>Total Price: {{$total}}</p>
+      <p>Total Price: {{Cart::session(auth()->user()->id)->getSubTotal()}}</p>
     </div>
-    <button class="btn btn-secondary d-flex flex-row gap-2 mt-3 mb-2">
-      <p class="mb-0"><i class="bi bi-truck"></i></p>
-      <b><p class="mb-0">Checkout</p></b>
-    </button>
+    <a href="{{route('order.create')}}">
+      <button class="btn btn-secondary d-flex flex-row gap-2 mt-3 mb-2">
+        <p class="mb-0"><i class="bi bi-truck"></i></p>
+        <b><p class="mb-0">Checkout</p></b>
+      </button>
+    </a>
   </div>
 @endsection
 

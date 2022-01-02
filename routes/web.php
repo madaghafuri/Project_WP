@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ManageGameController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,7 @@ Route::get('/', function () {
 Route::resource('games', GameController::class)->only(['index', 'show']);
 Route::resource('cart', CartController::class)->middleware('auth');
 Route::resource('manage', ManageGameController::class)->middleware('is_admin');
+Route::resource('order', OrderController::class)->middleware('auth');
 
 Route::view('/register', 'auth.register')->name('register');
 Route::post('/register-user', [AuthController::class, 'register'])->name('register-post');

@@ -18,7 +18,7 @@ class CartController extends Controller
     {
       $user = auth()->user()->id;
       $cartItems = Cart::session($user)->getContent();
-      dd($cartItems);
+      // dd($cartItems);
       return view('games.cart', compact('cartItems'));
     }
 

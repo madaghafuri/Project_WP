@@ -44,15 +44,15 @@ class ManageGameController extends Controller
         'developer' => 'required',
         'publisher' => 'required',
         'price' => 'required|digits_between:1,7',
-        'cover' => 'required|image|max:100',
-        'trailer' => 'required|mimes:webm|max:100000'
+        'coverLink' => 'required|image|max:100',
+        'trailerLink' => 'required|mimes:webm|max:100000'
       ]);
 
-      $data['cover'] = $request->cover->store('cover', 'public');
-      $data['trailer'] = $request->trailer->store('trailer', 'public');
+      $data['coverLink'] = $request->coverLink->store('cover', 'public');
+      $data['trailerLink'] = $request->trailerLink->store('trailer', 'public');
 
       Game::create($data);
-      return redirect()->back()->with('success', 'Game successfully created');
+      return redirect()->back()->with('game_created', 'Game successfully created');
     }
 
     /**
