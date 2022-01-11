@@ -7,9 +7,11 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\Order_Detail;
 use Cart;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public $lastID;
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +19,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+      $transactions = Order::where('user_id', auth()->user()->id)->get();
+      return view('transaction.history', compact('transactions'));
     }
 
     /**
@@ -41,35 +44,42 @@ class OrderController extends Controller
      * @param  \App\Http\Requests\StoreOrderRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreOrderRequest $request)
+    public function store(Request $request)
     {
       $userID = auth()->user()->id;
-      $validation = $request->validate([
-          'card-name' => 'required|string|min:6',
-          'card-number' => 'required|regex:/^[0-9]+\s[0-9]+\s[0-9]+\s[0-9]+$/',
-          'month' => 'required|numeric|between:1,12',
-          'cvv' => 'required|digits_between:3,4',
-          'country' => 'required',
-          'zip-code' => 'required|numeric'
+      // $validation = $request->validate([
+      //     'card-name' => 'required|string|min:6',
+      //     'card-number' => 'required|regex:/^[0-9]+\s[0-9]+\s[0-9]+\s[0-9]+$/',
+      //     'month' => 'required|numeric|between:1,12',
+      //     'cvv' => 'required|digits_between:3,4',
+      //     'country' => 'required',
+      //     'zip-code' => 'required|numeric'
+      // ]);
+
+      $order = Order::create([
+        'user_id' => $userID,
+        'total_price' => Cart::session(auth()->user()->id)->getSubTotal()
       ]);
-      if($validation){
-        Order::create([
-          'user_id' => $userID,
-          'total_price' => Cart::session(auth()->user()->id)->getSubTotal()
+      
+      $this->lastID = $order->id;
+      $orderDetail = Cart::session(auth()->user()->id)->getContent();
+      foreach($orderDetail as $detail){
+        $things = Order::where('user_id', $userID)->where('id', $this->lastID)->first();
+        Order_Detail::create([
+          'order_id' => $things->id,
+          'game_id' => $detail->id,
+          'price' => $detail->price
         ]);
-
-        foreach ($request['game_id'] as $gameID) {
-          Order_Detail::create([
-            'order_id' => Order::where('user_id', auth()->user()->id)->id,
-            'game_id' => $gameID,
-            'price' => $request['price']
-          ]);
-        }
-
-        return redirect()->route('order.show', auth()->user()->id)->with('success', 'Your ourder has been created');
       }
-
-      return redirect()->back();
+      // foreach ($request['game_id'] as $gameID) {
+      //   Order_Detail::create([
+      //     'order_id' => Order::where('user_id', auth()->user()->id)->id,
+      //     'game_id' => $gameID,
+      //     'price' => $request['price']
+      //   ]);
+      // }
+      Cart::session($userID)->clear();
+      return redirect()->route('order.show', $this->lastID);
     }
 
     /**
@@ -80,7 +90,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-      $order = Order::where('user_id', $id)->first();
+      $order = Order::where('id', $id)->first();
       return view('transaction.show', compact('order'));
     }
 

@@ -19,4 +19,8 @@ class Game extends Model
     'coverLink',
     'trailerLink'
   ];
+
+  public function order_detail(){
+    return $this->hasMany(Order_Detail::class);
+  }
 }

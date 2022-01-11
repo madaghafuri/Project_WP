@@ -43,6 +43,7 @@
         <input type="text" class="form-control" name="zip-code">
       </div>
     </div>
+    <?php $total = 0 ?>
     @foreach ($cartItems as $cartItem)
       <input type="hidden" value="{{$cartItem->id}}" name="game_id">
       <input type="hidden" value="{{$cartItem->price}}" name="price">
@@ -50,7 +51,7 @@
     <div class="d-flex flex-row justify-content-between align-items-center">
       <div class="d-flex flex-row">
         <p>Total Price: </p>
-        <b><p>Rp. {{$cartItem->price}}</p></b>
+        <b><p>Rp. {{Cart::session(auth()->user()->id)->getSubTotal()}}</p></b>
       </div>
       <div class="d-flex flex-row">
         <button class="btn btn-light shadow" type="reset">Cancel</button>

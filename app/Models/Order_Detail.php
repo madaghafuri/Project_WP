@@ -14,7 +14,7 @@ class Order_Detail extends Model
   }
 
   public function game(){
-    return $this->hasOne(Game::class);
+    return $this->belongsTo(Game::class);
   }
 
   protected $fillable = [

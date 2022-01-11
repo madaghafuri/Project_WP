@@ -7,8 +7,8 @@
     <p>Transaction ID: {{$order->id}}</p>
     <p>Created at: {{$order->created_at}}</p>
     @foreach ($order->order_detail as $detail)
-      <?php $total += $detail->price ?>
-      <div>
+      <?php $total += $detail->game->price ?>
+      <div class="bg-white p-3 rounded-3">
         <img src="{{$detail->game->coverLink}}" alt="">
         <div>
           <h5>{{$detail->game->name}}</h5>
