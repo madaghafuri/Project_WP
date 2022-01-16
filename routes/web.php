@@ -31,7 +31,7 @@ Route::resource('games', GameController::class)->only(['index', 'show']);
 Route::resource('cart', CartController::class)->middleware('auth');
 Route::resource('manage', ManageGameController::class)->middleware('is_admin');
 Route::resource('order', OrderController::class)->middleware('auth');
-Route::resource('profile', ProfileControler::class)->middleware('auth');
+Route::resource('profile', ProfileControler::class)->only(['index', 'update'])->middleware('auth');
 
 Route::get('/search', [GameController::class, 'searchIndex'])->name('games.search');
 
