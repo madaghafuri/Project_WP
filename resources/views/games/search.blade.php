@@ -2,6 +2,9 @@
 
 @section('page-content')
   <h1>Search Game</h1>
+  @if ($games->isEmpty())
+    <h6>There are no games content can be shown right now</h6>
+  @else
   <div class="d-flex flex-wrap p-3 justify-content-center">
     @foreach($games as $game)
       <a href="{{route('games.show', $game->id)}}" style="text-decoration-line: none; color: black; --hover-backgroundcolor: gray"><div class="card shadow bg-body rounded-3 m-3" style="width: 23rem;">
@@ -16,4 +19,6 @@
       </div></a>
     @endforeach
   </div>
+  @endif
+  
 @endsection
