@@ -31,6 +31,8 @@ Route::resource('cart', CartController::class)->middleware('auth');
 Route::resource('manage', ManageGameController::class)->middleware('is_admin');
 Route::resource('order', OrderController::class)->middleware('auth');
 
+Route::get('/search', [GameController::class, 'searchIndex'])->name('games.search');
+
 Route::view('/register', 'auth.register')->name('register');
 Route::post('/register-user', [AuthController::class, 'register'])->name('register-post');
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Cart_Detail;
 use App\Models\Game;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Cart;
-use Darryldecode\Cart\Cart as CartCart;
+
 
 class CartController extends Controller
 {
@@ -16,9 +18,8 @@ class CartController extends Controller
      */
     public function index()
     {
-      $user = auth()->user()->id;
-      $cartItems = Cart::session($user)->getContent();
-      // dd($cartItems);
+      $cartID = Cart::where('user_id', auth()->user()->id)->first()->id;
+      $cartItems = Cart_Detail::all()->where('cart_id', $cartID);
       return view('games.cart', compact('cartItems'));
     }
 
@@ -40,16 +41,21 @@ class CartController extends Controller
      */
     public function store(Request $req)
     {
-      $user = auth()->user()->id;
-      Cart::session($user)->add([
-        'id' => $req->id,
-        'name' => $req->name,
-        'price' => $req->price,
-        'quantity' => 1,
-        'attributes' => [
-          'image' => $req->image,
-          'category' => $req->category
-        ]
+      // $user = auth()->user()->id;
+      // Cart::session($user)->add([
+      //   'id' => $req->id,
+      //   'name' => $req->name,
+      //   'price' => $req->price,
+      //   'quantity' => 1,
+      //   'attributes' => [
+      //     'image' => $req->image,
+      //     'category' => $req->category
+      //   ]
+      // ]);
+      Cart_Detail::create([
+        'game_id' => $req->id,
+        'cart_id' => Cart::where('user_id', auth()->user()->id)->first()->id,
+        'price' => $req->price
       ]);
       return redirect()->back()->with('success', 'Game sucessfully added to cart');
     }
@@ -100,8 +106,9 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-      $user = auth()->user()->id;
-      Cart::session($user)->remove($id);
+      // $user = auth()->user()->id;
+      // Cart::session($user)->remove($id);
+      Cart_Detail::remove($id);
       return redirect()->route('cart.index');
     }
 }

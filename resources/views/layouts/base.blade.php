@@ -26,18 +26,20 @@
             @endcan
         </div>
         <div id="right" class="d-flex">
-          <div class="d-flex flex-row ">
-              <input type="search" name="" id="" placeholder="Search" class="form-control me-2">
-              <button class="btn btn-secondary me-2" type="submit">
-                  <i><i class="bi bi-search"></i></i>
-              </button>
-          </div>
+          <form action="{{route('games.search')}}" method="GET">
+            <div class="d-flex flex-row ">
+                <input type="search" name="term" id="term" placeholder="Search" class="form-control me-2">
+                <button class="btn btn-secondary me-2" type="submit">
+                    <i><i class="bi bi-search"></i></i>
+                </button>
+            </div>
+          </form>
           @auth
           <div class="d-flex flex-row gap-2">
             <a href="{{route('cart.index')}}">
               <button class="btn btn-secondary ml-3 mr-3 position-relative">
                 <i class="bi bi-cart"></i>
-                <?php $cartTotalQuantity = Cart::session(auth()->user()->id)->getTotalQuantity() ?>
+                <?php $cartTotalQuantity = 0 ?>
                   @if ($cartTotalQuantity > 0)  
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {{$cartTotalQuantity}}                 

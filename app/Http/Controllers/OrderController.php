@@ -6,7 +6,8 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\Order_Detail;
-use Cart;
+use App\Models\Cart;
+use App\Models\Cart_Detail;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -31,8 +32,9 @@ class OrderController extends Controller
     public function create()
     {
       $user = auth()->user()->id;
-      $cartItems = Cart::session($user)->getContent();
-      if(Cart::session($user)->isEmpty()){
+      $cartID = Cart::where('user_id', auth()->user()->id)->first()->id;
+      $cartItems = Cart_Detail::all()->where('cart_id', $cartID);
+      if($cartItems->isEmpty()){
         return redirect()->back();
       }
       return view('transaction.create', compact('cartItems'));
@@ -55,15 +57,19 @@ class OrderController extends Controller
       //     'country' => 'required',
       //     'zip-code' => 'required|numeric'
       // ]);
-
+      $totalPrice = 0;
+      $cartID = Cart::where('user_id', auth()->user()->id)->first()->id;
+      $cartItems = Cart_Detail::all()->where('cart_id', $cartID);
+      foreach ($cartItems as $details) {
+        $totalPrice += $details->price;
+      }
       $order = Order::create([
         'user_id' => $userID,
-        'total_price' => Cart::session(auth()->user()->id)->getSubTotal()
+        'total_price' => $totalPrice
       ]);
       
       $this->lastID = $order->id;
-      $orderDetail = Cart::session(auth()->user()->id)->getContent();
-      foreach($orderDetail as $detail){
+      foreach($cartItems as $detail){
         $things = Order::where('user_id', $userID)->where('id', $this->lastID)->first();
         Order_Detail::create([
           'order_id' => $things->id,
@@ -78,7 +84,9 @@ class OrderController extends Controller
       //     'price' => $request['price']
       //   ]);
       // }
-      Cart::session($userID)->clear();
+      foreach ($cartItems as $detail) {
+        $detail->destroy($detail->id);
+      }
       return redirect()->route('order.show', $this->lastID);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
   public function register(Request $req) {
-    $req->validate([
+    $validation = $req->validate([
       'username' => 'required',
       'fullname' => 'required',
       'password' => 'required',
@@ -18,20 +19,23 @@ class AuthController extends Controller
     ]);
 
     $data = $req->all();
-    $check = $this->create($data);
+    if($validation){
+      $created = User::create([
+        'username' => $data['username'],
+        'fullname' => $data['fullname'],
+        'password' => Hash::make($data['password']),
+        'roles' => $data['roles']
+      ]);
+    }
+    
+    Cart::create([
+      'user_id' => $created->id,
+    ]);
 
-    if($check) return redirect()->route('login');
+    if($created) return redirect()->route('login');
     return redirect()->route('register');   
   }
 
-  public function create(array $data){
-    return User::create([
-      'username' => $data['username'],
-      'fullname' => $data['fullname'],
-      'password' => Hash::make($data['password']),
-      'roles' => $data['roles']
-    ]);
-  }
     public function login(Request $req){
       $credentials = $req->validate([
         'username' => 'required|exists:users,username',

@@ -15,12 +15,12 @@
       @foreach ($cartItems as $details)
         <?php $total += $details->price ?>
         <div class="d-flex flex-row gap-3 mb-2">
-          <img class="rounded-3" src={{$details->attributes->image}} alt="">
+          <img class="rounded-3" src={{$details->game->coverLink}} alt="">
           <div class="d-flex flex-row justify-content-between w-100 align-items-center">
             <div>
               <div class="d-flex flex-row gap-3">
-                <h5 class="mb-0">{{ $details->name }}</h5>
-                <button class="btn btn-sm btn-dark rounded-pill" disabled>{{ $details->attributes->category }}</button>
+                <h5 class="mb-0">{{ $details->game->name }}</h5>
+                <button class="btn btn-sm btn-dark rounded-pill" disabled>{{ $details->game->category }}</button>
               </div>
               <div class="d-flex flex-row" style="color: gray">
                 <p><i class="bi bi-tag"></i></p>
@@ -40,7 +40,7 @@
       @endforeach
     
     <div id="total-price" class="mt-3">
-      <p>Total Price: {{Cart::session(auth()->user()->id)->getSubTotal()}}</p>
+      <p>Total Price: {{$total}}</p>
     </div>
     <a href="{{route('order.create')}}">
       <button class="btn btn-secondary d-flex flex-row gap-2 mt-3 mb-2">

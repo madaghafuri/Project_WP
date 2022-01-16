@@ -45,13 +45,14 @@
     </div>
     <?php $total = 0 ?>
     @foreach ($cartItems as $cartItem)
+    <?php $total += $cartItem->price ?>
       <input type="hidden" value="{{$cartItem->id}}" name="game_id">
       <input type="hidden" value="{{$cartItem->price}}" name="price">
     @endforeach
     <div class="d-flex flex-row justify-content-between align-items-center">
       <div class="d-flex flex-row">
         <p>Total Price: </p>
-        <b><p>Rp. {{Cart::session(auth()->user()->id)->getSubTotal()}}</p></b>
+        <b><p>Rp. {{$total}}</p></b>
       </div>
       <div class="d-flex flex-row">
         <button class="btn btn-light shadow" type="reset">Cancel</button>

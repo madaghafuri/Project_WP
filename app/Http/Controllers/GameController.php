@@ -8,6 +8,13 @@ use Cart;
 
 class GameController extends Controller
 {
+  public function searchIndex(Request $req){
+    $search = $req->input('term');
+    $games = Game::query()
+      ->where('name', 'LIKE', "%{$search}%")->get();
+    
+    return view('games.search', ['games' => $games]);
+  }
     /**
      * Display a listing of the resource.
      *
