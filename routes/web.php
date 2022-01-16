@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ManageGameController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileControler;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,7 @@ Route::resource('games', GameController::class)->only(['index', 'show']);
 Route::resource('cart', CartController::class)->middleware('auth');
 Route::resource('manage', ManageGameController::class)->middleware('is_admin');
 Route::resource('order', OrderController::class)->middleware('auth');
+Route::resource('profile', ProfileControler::class)->middleware('auth');
 
 Route::get('/search', [GameController::class, 'searchIndex'])->name('games.search');
 

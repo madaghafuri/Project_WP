@@ -7,7 +7,7 @@
       <div class="border-bottom">
         <p>Transaction ID: {{$order->id}}</p>
         <p>Purchased Date: {{$order->created_at}}</p>
-        <div class="d-flex flex-row gap-3">
+        <div class="d-flex flex-row gap-3 overflow-auto">
           @foreach ($order->order_detail as $item)
             <img class="rounded-3 img-fluid" style="max-width: 30%" src="{{$item->game->coverLink}}" alt="">
           @endforeach

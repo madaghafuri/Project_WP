@@ -53,7 +53,7 @@
                 <i class="bi bi-person"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="{{route('profile.index')}}">Profile</a></li>
                 <li><a class="dropdown-item" href="{{route('order.index')}}">Transaction History</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{{route('logout')}}">Sign Out</a></li>
