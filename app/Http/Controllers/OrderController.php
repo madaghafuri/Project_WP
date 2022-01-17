@@ -67,13 +67,13 @@ class OrderController extends Controller
         'user_id' => $userID,
         'total_price' => $totalPrice
       ]);
-      
+
       $this->lastID = $order->id;
       foreach($cartItems as $detail){
         $things = Order::where('user_id', $userID)->where('id', $this->lastID)->first();
         Order_Detail::create([
           'order_id' => $things->id,
-          'game_id' => $detail->id,
+          'game_id' => $detail->game_id,
           'price' => $detail->price
         ]);
       }
