@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-  <title>Document</title>
+  <title>ReXsteam</title>
 </head>
 <body class="">
   <div class="navbar navbar-expand-lg navbar-dark bg-dark ps-4 pe-4">
@@ -40,9 +40,9 @@
               <button class="btn btn-secondary ml-3 mr-3 position-relative">
                 <i class="bi bi-cart"></i>
                 <?php $cartTotalQuantity = 0 ?>
-                  @if ($cartTotalQuantity > 0)  
+                  @if ($cartTotalQuantity > 0)
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{$cartTotalQuantity}}                 
+                    {{$cartTotalQuantity}}
                     <span class="visually-hidden">unread messages</span>
                   </span>
                   @endif
