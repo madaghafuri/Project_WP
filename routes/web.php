@@ -23,10 +23,6 @@ Route::get('/', function () {
     return redirect()->route('games.index');
 });
 
-// Route::middleware('auth')->group(function (){
-//   Route::resource('games', GameController::class);
-// });
-
 Route::resource('games', GameController::class)->only(['index', 'show']);
 Route::resource('cart', CartController::class)->middleware('auth');
 Route::resource('manage', ManageGameController::class)->middleware('is_admin');

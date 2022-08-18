@@ -49,14 +49,6 @@ class OrderController extends Controller
     public function store(Request $request)
     {
       $userID = auth()->user()->id;
-      // $validation = $request->validate([
-      //     'card-name' => 'required|string|min:6',
-      //     'card-number' => 'required|regex:/^[0-9]+\s[0-9]+\s[0-9]+\s[0-9]+$/',
-      //     'month' => 'required|numeric|between:1,12',
-      //     'cvv' => 'required|digits_between:3,4',
-      //     'country' => 'required',
-      //     'zip-code' => 'required|numeric'
-      // ]);
       $totalPrice = 0;
       $cartID = Cart::where('user_id', auth()->user()->id)->first()->id;
       $cartItems = Cart_Detail::all()->where('cart_id', $cartID);
@@ -77,13 +69,6 @@ class OrderController extends Controller
           'price' => $detail->price
         ]);
       }
-      // foreach ($request['game_id'] as $gameID) {
-      //   Order_Detail::create([
-      //     'order_id' => Order::where('user_id', auth()->user()->id)->id,
-      //     'game_id' => $gameID,
-      //     'price' => $request['price']
-      //   ]);
-      // }
       foreach ($cartItems as $detail) {
         $detail->destroy($detail->id);
       }
