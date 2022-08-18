@@ -41,17 +41,6 @@ class CartController extends Controller
      */
     public function store(Request $req)
     {
-      // $user = auth()->user()->id;
-      // Cart::session($user)->add([
-      //   'id' => $req->id,
-      //   'name' => $req->name,
-      //   'price' => $req->price,
-      //   'quantity' => 1,
-      //   'attributes' => [
-      //     'image' => $req->image,
-      //     'category' => $req->category
-      //   ]
-      // ]);
       Cart_Detail::create([
         'game_id' => $req->id,
         'cart_id' => Cart::where('user_id', auth()->user()->id)->first()->id,
@@ -106,8 +95,6 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-      // $user = auth()->user()->id;
-      // Cart::session($user)->remove($id);
       Cart_Detail::destroy($id);
       return redirect()->route('cart.index');
     }
